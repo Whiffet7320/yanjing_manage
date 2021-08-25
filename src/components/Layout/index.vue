@@ -1,9 +1,9 @@
 <template>
   <div class="layout">
     <el-container v-if="this.isLogin == 'true'">
-      <el-aside><Aside/></el-aside>
+      <el-aside width=null><Aside/></el-aside>
       <el-container>
-        <!-- <el-header><Header/></el-header> -->
+        <el-header><Header/></el-header>
         <el-main>
           <RouterView></RouterView>
         </el-main>
@@ -15,7 +15,7 @@
 
 <script>
 import Login from "../Login";
-// import Header from "../Header";
+import Header from "../Header";
 import Aside from "../Aside";
 export default {
   data() {
@@ -28,7 +28,7 @@ export default {
   },
   components: {
     Login,
-    // Header,
+    Header,
     Aside,
   },
 };
@@ -40,17 +40,21 @@ export default {
   height: 60px;
   padding: 0 !important;
 } */
+.el-header{
+  padding: 0;
+}
 .el-container {
   height: calc(100vh);
 }
 .el-aside {
-  background-color:#ffffff;
+  background-color:#001529;
   color: #333;
-  width: 284px !important;
+  /* width: 200px !important; */
+  min-width: 40px;
 }
 
 .el-main {
-  padding: 0 0 0 24px !important;
+  /* padding: 0 0 0 24px !important; */
   background: #f3f3f3;
   color: #333;
 }

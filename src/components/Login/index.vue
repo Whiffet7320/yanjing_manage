@@ -4,7 +4,7 @@
       <img class="bacImage" src="../../assets/image/back.png" alt="" />
       <img class="leftImg" src="../../assets/image/hb.png" alt="" />
       <div class="loginBox">
-        <div class="tit1">商城管理系统</div>
+        <div class="tit1">分销管理系统</div>
         <div class="tit2">欢迎你回来~</div>
         <div class="loginBox2">
           <el-form
@@ -113,28 +113,20 @@ export default {
         this.loginForm.password
       );
       console.log(res);
-      if (res.result == 1) {
-        sessionStorage.setItem("user_name", res.user_name);
-        sessionStorage.setItem("user_pass", res.user_pass);
-        const resp = await this.$api.logincheck(
-          sessionStorage.getItem("user_name"),
-          sessionStorage.getItem("user_pass")
-        );
-        console.log(resp);
-        if (resp.result == 1) {
-          sessionStorage.setItem("token", resp.sign_token);
-          sessionStorage.setItem("isLogin", true);
-          this.$message({
-            message: resp.msg,
-            type: "success",
-          });
-          setTimeout(() => {
-            this.$router.push({ path: "/" });
-            this.$router.go(0);
-          }, 500);
-        }
+      if (res.code == 200) {
+        sessionStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("isLogin", true);
+        sessionStorage.setItem("userInfo", JSON.stringify(res.data.info));
+        this.$message({
+          message: res.message,
+          type: "success",
+        });
+        setTimeout(() => {
+          this.$router.push({ path: "/" });
+          this.$router.go(0);
+        }, 500);
       } else {
-        this.$message.error(res.msg);
+        this.$message.error(res.message);
       }
     },
   },

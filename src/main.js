@@ -5,10 +5,17 @@ import App from './App.vue'
 import router from './router';
 import api from './api/index';
 import store from './store';
-import Viewer from 'v-viewer'
-import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer';
+import 'viewerjs/dist/viewer.css';
+import 'xe-utils';
+import VXETable from 'vxe-table';
+import 'vxe-table/lib/style.css';
+Vue.use(VXETable)
 
-Vue.prototype.$api = api
+Vue.prototype.$api = api;
+// Vue.prototype.$url = 'http://192.168.1.128:8094/admin'
+// Vue.prototype.$url = 'https://hii7mo3m.dnat.tech/admin'
+Vue.prototype.$url = 'http://192.168.50.142:9083'
 
 Vue.use(ElementUI);
 Vue.use(Viewer)

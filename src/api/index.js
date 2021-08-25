@@ -3,6 +3,7 @@ import Vue from 'vue'
 import router from '../router.js';
 import urls from './url.js';
 const vue = new Vue()
+axios.defaults.headers['Content-Type'] = "application/json;charset=UTF-8";
 let myPost = axios.create({
     baseURL: urls.baseUrl,
     method: 'post',
@@ -22,9 +23,10 @@ let myDelete = axios.create({
 myDelete.interceptors.request.use(config => {
     if (sessionStorage.getItem("token")) {
         config.headers = {
-            'token': sessionStorage.token,
-            'Access-Control-Allow-Origin': '*',
-            "access-control-allow-credentials": "true"
+            // 'X-Token': sessionStorage.getItem("token"),
+            'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+            // 'Access-Control-Allow-Origin': '*',
+            // "access-control-allow-credentials": "true"
         }
     }
     return config;
@@ -35,9 +37,8 @@ myDelete.interceptors.request.use(config => {
 myPost.interceptors.request.use(config => {
     if (sessionStorage.getItem("token")) {
         config.headers = {
-            'token': sessionStorage.token,
-            'Access-Control-Allow-Origin': '*',
-            "access-control-allow-credentials": "true"
+            // 'X-Token': sessionStorage.getItem("token"),
+            'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
         }
     }
     return config;
@@ -45,12 +46,11 @@ myPost.interceptors.request.use(config => {
     console.log(error);
     return Promise.reject();
 })
+
 myGet.interceptors.request.use(config => {
     if (sessionStorage.getItem("token")) {
         config.headers = {
-            'token': sessionStorage.token,
-            'Access-Control-Allow-Origin': '*',
-            "access-control-allow-credentials": "true"
+            'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
         }
     }
     return config;
@@ -154,334 +154,387 @@ myGet.interceptors.response.use(response => {
 })
 
 export default {
-    login(username, userpass) {
+    login(account, password) {
         return myPost({
             url: urls.login,
             data: {
-                username,
-                userpass,
+                account,
+                password,
             }
         })
     },
-    logincheck(username, userpass) {
-        return myPost({
-            url: urls.logincheck,
-            data: {
-                username,
-                userpass,
-            }
-        })
-    },
-    addclassify(title, username, userpass) {
-        return myPost({
-            url: urls.addclassify,
-            data: {
-                title,
-                username,
-                userpass
-            }
-        })
-    },
-    listclassify() {
-        return myPost({
-            url: urls.listclassify,
-        })
-    },
-    updateclassify(title, sort, classify_id, username, userpass) {
-        return myPost({
-            url: urls.updateclassify,
-            data: {
-                title,
-                sort,
-                classify_id,
-                username,
-                userpass
-            }
-        })
-    },
-    delclassify(classify_id, username, userpass) {
-        return myPost({
-            url: urls.delclassify,
-            data: {
-                classify_id,
-                username,
-                userpass
-            }
-        })
-    },
-    updateswiper(pic, page, username, userpass) {
-        return myPost({
-            url: urls.updateswiper,
-            data: {
-                pic,
-                page,
-                username,
-                userpass
-            }
-        })
-    },
-    delswiper(page, username, userpass) {
-        return myPost({
-            url: urls.delswiper,
-            data: {
-                page,
-                username,
-                userpass
-            }
-        })
-    },
-    viewswiper() {
-        return myPost({
-            url: urls.viewswiper,
-        })
-    },
-    billagreementsetstatus(username, userpass, status) {
-        return myPost({
-            url: urls.billagreementsetstatus,
-            data: {
-                username,
-                userpass,
-                status
-            }
-        })
-    },
-    billagreementstatusview() {
-        return myPost({
-            url: urls.billagreementstatusview,
-        })
-    },
-    billagreement(username, userpass, content) {
-        return myPost({
-            url: urls.billagreement,
-            data: {
-                username,
-                userpass,
-                content
-            }
-        })
-    },
-    billagreement_view() {
-        return myPost({
-            url: urls.billagreement_view,
-        })
-    },
-    updateinvitation(username, userpass, obj) {
-        return myPost({
-            url: urls.updateinvitation,
-            data: {
-                username,
-                userpass,
+    productList(obj) {
+        return myGet({
+            url: urls.productList,
+            params: {
                 ...obj
             }
         })
     },
-    invitation_view() {
-        return myPost({
-            url: urls.invitation_view,
+    async productUpload(image) {
+        var configs = {
+            headers: {
+                "Content-Type": "multipart/form-data;charse=UTF-8",
+                'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+            },
+        };
+        const res = await axios
+            .post(`${urls.baseUrl}/admin/product/upload`, image, configs)
+        return res.data
+    },
+    loginInfo() {
+        return myGet({
+            url: urls.loginInfo,
         })
     },
-    addgoodspic(username, userpass, pic) {
+    categorySave(obj) {
         return myPost({
-            url: urls.addgoodspic,
+            url: urls.categorySave,
             data: {
-                username,
-                userpass,
-                pic
-            }
-        })
-    },
-    goodspic_del(username, userpass, pic_url) {
-        return myPost({
-            url: urls.goodspic_del,
-            data: {
-                username,
-                userpass,
-                pic_url
-            }
-        })
-    },
-    goods_add(username, userpass, obj) {
-        return myPost({
-            url: urls.goods_add,
-            data: {
-                username,
-                userpass,
                 ...obj
             }
         })
     },
-    goods_list(page, pagesize, keyword, classify_id) {
-        return myPost({
-            url: urls.goods_list,
-            data: {
-                page,
-                pagesize,
-                keyword,
-                classify_id
+    categoryIndex(obj) {
+        return myGet({
+            url: urls.categoryIndex,
+            params: {
+                ...obj
             }
         })
     },
-    goods_del(username, userpass, id) {
+    productSave(obj) {
         return myPost({
-            url: urls.goods_del,
+            url: urls.productSave,
             data: {
-                username,
-                userpass,
+                ...obj
+            }
+        })
+    },
+    categoryDel(id) {
+        return myPost({
+            url: urls.categoryDel,
+            data: {
                 id
             }
         })
     },
-    goods_update(username, userpass, obj, id) {
-        return myPost({
-            url: urls.goods_update,
-            data: {
-                username,
-                userpass,
-                ...obj,
+    productAttrs(id) {
+        return myGet({
+            url: urls.productAttrs,
+            params: {
                 id
             }
         })
     },
-    user_freeorder(page, pagesize, keyword) {
-        return myPost({
-            url: urls.user_freeorder,
-            data: {
-                page,
-                pagesize,
-                keyword
+    productDescription(id) {
+        return myGet({
+            url: urls.productDescription,
+            params: {
+                id
             }
         })
     },
-    quota_list(page, pagesize, keyword) {
+    combinationSave(obj) {
         return myPost({
-            url: urls.quota_list,
-            data: {
-                page,
-                pagesize,
-                keyword
-            }
-        })
-    },
-    quota_view(user_id) {
-        return myPost({
-            url: urls.quota_view,
-            data: {
-                user_id
-            }
-        })
-    },
-    user_order(page, pagesize, keyword, status) {
-        return myPost({
-            url: urls.user_order,
-            data: {
-                page,
-                pagesize,
-                keyword,
-                status
-            }
-        })
-    },
-    guideset_content(username, userpass, content) {
-        return myPost({
-            url: urls.guideset_content,
-            data: {
-                username,
-                userpass,
-                content
-            }
-        })
-    },
-    guide_content() {
-        return myPost({
-            url: urls.guide_content,
-        })
-    },
-    payment_set(obj) {
-        return myPost({
-            url: urls.payment_set,
+            url: urls.combinationSave,
             data: {
                 ...obj
             }
         })
     },
-    payment_view() {
-        return myPost({
-            url: urls.payment_view,
-        })
-    },
-    centerbanner_list() {
-        return myPost({
-            url: urls.centerbanner_list,
-        })
-    },
-    centerbanner_edit(username, userpass, pic, url, id, title, sub_title) {
-        return myPost({
-            url: urls.centerbanner_edit,
-            data: {
-                username,
-                userpass,
-                pic,
-                url,
-                id,
-                title,
-                sub_title
+    combinationList(obj) {
+        return myGet({
+            url: urls.combinationList,
+            params: {
+                ...obj
             }
         })
     },
-    order_view(username, userpass, order_id) {
-        return myPost({
-            url: urls.order_view,
-            data: {
-                username,
-                userpass,
-                order_id
+    combinationAttrs(id) {
+        return myGet({
+            url: urls.combinationAttrs,
+            params: {
+                id
             }
         })
     },
-    order_postsale(username, userpass, page, pagesize, status) {
-        return myPost({
-            url: urls.order_postsale,
-            data: {
-                username,
-                userpass,
-                page,
-                pagesize,
-                status
+    combinationDescription(id) {
+        return myGet({
+            url: urls.combinationDescription,
+            params: {
+                id
             }
         })
     },
-    order_postsaleset(username, userpass, id, type) {
+    combinationShow(obj) {
         return myPost({
-            url: urls.order_postsaleset,
+            url: urls.combinationShow,
             data: {
-                username,
-                userpass,
-                id,
-                type
+                ...obj
             }
         })
     },
-    withdrawal_list(username, userpass, page, pagesize, status) {
+    productShow(obj) {
         return myPost({
-            url: urls.withdrawal_list,
+            url: urls.productShow,
             data: {
-                username,
-                userpass,
-                page,
-                pagesize,
-                status
+                ...obj
             }
         })
     },
-    withdrawal(username, userpass, id, remark, status) {
+    activitySave(obj) {
         return myPost({
-            url: urls.withdrawal,
+            url: urls.activitySave,
             data: {
-                username,
-                userpass,
-                id,
-                remark,
-                status
+                ...obj
+            }
+        })
+    },
+    activityIndex(obj) {
+        return myGet({
+            url: urls.activityIndex,
+            params: {
+                ...obj
+            }
+        })
+    },
+    activityDel(obj) {
+        return myPost({
+            url: urls.activityDel,
+            data: {
+                ...obj
+            }
+        })
+    },
+    orderIndex(obj) {
+        return myGet({
+            url: urls.orderIndex,
+            params: {
+                ...obj
+            }
+        })
+    },
+    activityAdd_product(obj) {
+        return myPost({
+            url: urls.activityAdd_product,
+            data: {
+                ...obj
+            }
+        })
+    },
+    activityList_product(obj) {
+        return myGet({
+            url: urls.activityList_product,
+            params: {
+                ...obj
+            }
+        })
+    },
+    orderDelivery(obj) {
+        return myPost({
+            url: urls.orderDelivery,
+            data: {
+                ...obj
+            }
+        })
+    },
+    activityList_gift() {
+        return myGet({
+            url: urls.activityList_gift,
+        })
+    },
+    activityAdd_gift(obj) {
+        return myPost({
+            url: urls.activityAdd_gift,
+            data: {
+                ...obj
+            }
+        })
+    },
+    activityDel_gift(obj) {
+        return myPost({
+            url: urls.activityDel_gift,
+            data: {
+                ...obj
+            }
+        })
+    },
+    activityDel_cate_gift(obj) {
+        return myPost({
+            url: urls.activityDel_cate_gift,
+            data: {
+                ...obj
+            }
+        })
+    },
+    activityAdd_cate_gift(obj) {
+        return myPost({
+            url: urls.activityAdd_cate_gift,
+            data: {
+                ...obj
+            }
+        })
+    },
+    activityDel_product(obj) {
+        return myPost({
+            url: urls.activityDel_product,
+            data: {
+                ...obj
+            }
+        })
+    },
+    uniqidIndex(obj) {
+        return myGet({
+            url: urls.uniqidIndex,
+            params: {
+                ...obj
+            }
+        })
+    },
+    uniqidAdd(obj) {
+        return myPost({
+            url: urls.uniqidAdd,
+            data: {
+                ...obj
+            }
+        })
+    },
+    uniqidDel(obj) {
+        return myPost({
+            url: urls.uniqidDel,
+            data: {
+                ...obj
+            }
+        })
+    },
+    combinationAdd_product_cate(obj) {
+        return myPost({
+            url: urls.combinationAdd_product_cate,
+            data: {
+                ...obj
+            }
+        })
+    },
+    combinationList_product_cate(obj) {
+        return myGet({
+            url: urls.combinationList_product_cate,
+            params: {
+                ...obj
+            }
+        })
+    },
+    combinationDel_product_cate(obj) {
+        return myPost({
+            url: urls.combinationDel_product_cate,
+            data: {
+                ...obj
+            }
+        })
+    },
+    userIndex(obj) {
+        return myGet({
+            url: urls.userIndex,
+            params: {
+                ...obj
+            }
+        })
+    },
+    webconfigSave(obj) {
+        return myPost({
+            url: urls.webconfigSave,
+            data: {
+                ...obj
+            }
+        })
+    },
+    webconfigIndex() {
+        return myGet({
+            url: urls.webconfigIndex,
+        })
+    },
+    sell_order_list(obj) {
+        return myGet({
+            url: urls.sell_order_list,
+            params: {
+                ...obj
+            }
+        })
+    },
+    confirm_sell_order(obj) {
+        return myPost({
+            url: urls.confirm_sell_order,
+            data: {
+                ...obj
+            }
+        })
+    },
+    save_shipping_templates(obj) {
+        return myPost({
+            url: urls.save_shipping_templates,
+            data: {
+                ...obj
+            }
+        })
+    },
+    list_shipping_templates(obj) {
+        return myGet({
+            url: urls.list_shipping_templates,
+            params: {
+                ...obj
+            }
+        })
+    },
+    detail_shipping_templates(obj) {
+        return myGet({
+            url: urls.detail_shipping_templates,
+            params: {
+                ...obj
+            }
+        })
+    },
+    del_shipping_templates(obj) {
+        return myPost({
+            url: urls.del_shipping_templates,
+            data: {
+                ...obj
+            }
+        })
+    },
+    dashboard() {
+        return myGet({
+            url: urls.dashboard,
+        })
+    },
+    user_bill_log(obj) {
+        return myGet({
+            url: urls.user_bill_log,
+            params: {
+                ...obj
+            }
+        })
+    },
+    template_message_list(obj) {
+        return myGet({
+            url: urls.template_message_list,
+            params: {
+                ...obj
+            }
+        })
+    },
+    template_message_save(obj) {
+        return myPost({
+            url: urls.template_message_save,
+            data: {
+                ...obj
+            }
+        })
+    },
+    user_extract(obj) {
+        return myGet({
+            url: urls.user_extract,
+            params: {
+                ...obj
             }
         })
     },
