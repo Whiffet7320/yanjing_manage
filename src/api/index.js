@@ -538,4 +538,148 @@ export default {
             }
         })
     },
+    async upload_pic(image) {
+        var configs = {
+            headers: {
+                "Content-Type": "multipart/form-data;charse=UTF-8",
+                'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+            },
+        };
+        const res = await axios
+            .post(`${urls.baseUrl}/admin/upload_pic`, image, configs)
+        return res.data
+    },
+    banner_add(obj) {
+        return myPost({
+            url: urls.banner_add,
+            data: {
+                ...obj
+            }
+        })
+    },
+    banner_list(obj) {
+        return myGet({
+            url: urls.banner_list,
+            params: {
+                ...obj
+            }
+        })
+    },
+    banner_edit(obj) {
+        return myPost({
+            url: urls.banner_edit,
+            data: {
+                ...obj
+            }
+        })
+    },
+    banner_del(obj) {
+        return myPost({
+            url: urls.banner_del,
+            data: {
+                ...obj
+            }
+        })
+    },
+    open_pic_add(obj) {
+        return myPost({
+            url: urls.open_pic_add,
+            data: {
+                ...obj
+            }
+        })
+    },
+    open_pic() {
+        return myGet({
+            url: urls.open_pic,
+        })
+    },
+    open_pic_edit(obj) {
+        return myPost({
+            url: urls.open_pic_edit,
+            data: {
+                ...obj
+            }
+        })
+    },
+    data_center(obj) {
+        return myGet({
+            url: urls.data_center,
+            params: {
+                ...obj
+            }
+        })
+    },
+    other_shipping_templates(obj) {
+        return myGet({
+            url: urls.other_shipping_templates,
+            params: {
+                ...obj
+            }
+        })
+    },
+    orderDel(obj) {
+        return myPost({
+            url: urls.orderDel,
+            data: {
+                ...obj
+            }
+        })
+    },
+    updat_user_info(obj) {
+        return myPost({
+            url: urls.updat_user_info,
+            data: {
+                ...obj
+            }
+        })
+    },
+    article_list(obj) {
+        return myGet({
+            url: urls.article_list,
+            params: {
+                ...obj
+            }
+        })
+    },
+    article_add(obj) {
+        return myPost({
+            url: urls.article_add,
+            data: {
+                ...obj
+            }
+        })
+    },
+    article_edit(obj) {
+        return myPost({
+            url: urls.article_edit,
+            data: {
+                ...obj
+            }
+        })
+    },
+    article_del(obj) {
+        return myPost({
+            url: urls.article_del,
+            data: {
+                ...obj
+            }
+        })
+    },
+    user_pintuan_log(obj) {
+        return myGet({
+            url: urls.user_pintuan_log,
+            params: {
+                ...obj
+            }
+        })
+    },
+    user_pintuan_count(obj) {
+        return myGet({
+            url: urls.user_pintuan_count,
+            params: {
+                ...obj
+            }
+        })
+    },
 }

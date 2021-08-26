@@ -49,6 +49,15 @@ const routes = [{
         component: () => import('./components/Dingdan/Dingdanguanli'),
     }, ]
 }, {
+    path: '/Wenzhang',
+    name: 'Wenzhang',
+    component: () => import('./components/Wenzhang'),
+    children: [{
+        path: 'Wenzhangliebiao',
+        name: 'Wenzhangliebiao',
+        component: () => import('./components/Wenzhang/Wenzhangliebiao'),
+    }]
+}, {
     path: '/Yingxiao',
     name: 'Yingxiao',
     component: () => import('./components/Yingxiao'),
@@ -68,10 +77,14 @@ const routes = [{
         path: 'Maichanghuodong',
         name: 'Maichanghuodong',
         component: () => import('./components/Yingxiao/Maichanghuodong'),
-    },{
+    }, {
         path: 'Jishouliebiao',
         name: 'Jishouliebiao',
         component: () => import('./components/Yingxiao/Jishouliebiao'),
+    }, {
+        path: 'Pingtuanjilu',
+        name: 'Pingtuanjilu',
+        component: () => import('./components/Yingxiao/Pingtuanjilu'),
     }, ]
 }, {
     path: '/Yonghu',
@@ -81,15 +94,15 @@ const routes = [{
         path: 'Yonghuguanli',
         name: 'Yonghuguanli',
         component: () => import('./components/Yonghu/Yonghuguanli'),
-    },{
+    }, {
         path: 'Lianghaoliebiao',
         name: 'Lianghaoliebiao',
         component: () => import('./components/Yonghu/Lianghaoliebiao'),
-    },{
+    }, {
         path: 'Tixianliebiao',
         name: 'Tixianliebiao',
         component: () => import('./components/Yonghu/Tixianliebiao'),
-    } ]
+    }]
 }, {
     path: '/Fenxiao',
     name: 'Fenxiao',
@@ -112,7 +125,7 @@ const routes = [{
         name: 'Yongjinjilu',
         component: () => import('./components/Caiwu/Yongjinjilu'),
     }, ]
-},{
+}, {
     path: '/Shezhi',
     name: 'Shezhi',
     component: () => import('./components/Shezhi'),
@@ -120,7 +133,27 @@ const routes = [{
         path: 'Xiaoxiguanli',
         name: 'Xiaoxiguanli',
         component: () => import('./components/Shezhi/Xiaoxiguanli'),
-    }, ]
+    }, {
+        path: 'Qitashezhi',
+        name: 'Qitashezhi',
+        component: () => import('./components/Shezhi/Qitashezhi'),
+    }, {
+        path: 'Lunbotushezhi',
+        name: 'Lunbotushezhi',
+        component: () => import('./components/Shezhi/Lunbotushezhi'),
+    }, {
+        path: 'Lunbotuliebiao',
+        name: 'Lunbotuliebiao',
+        component: () => import('./components/Shezhi/Lunbotuliebiao'),
+    }, {
+        path: 'Kaipinyeshezhi',
+        name: 'Kaipinyeshezhi',
+        component: () => import('./components/Shezhi/Kaipinyeshezhi'),
+    }, {
+        path: 'Shujuzhongxin',
+        name: 'Shujuzhongxin',
+        component: () => import('./components/Shezhi/Shujuzhongxin'),
+    }]
 }, ]
 
 const router = new VueRouter({

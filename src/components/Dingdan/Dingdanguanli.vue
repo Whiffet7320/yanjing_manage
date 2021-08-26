@@ -7,7 +7,7 @@
           <el-tab-pane label="全部订单" name="1"></el-tab-pane>
           <el-tab-pane label="普通订单" name="2"></el-tab-pane>
           <el-tab-pane label="拼团订单" name="3"></el-tab-pane>
-        </el-tabs> -->
+        </el-tabs>-->
       </div>
     </div>
     <!-- <div class="nav2">
@@ -17,7 +17,7 @@
         <el-col :span="6"><div class="box"></div></el-col>
         <el-col :span="6"><div class="box"></div></el-col>
       </el-row>
-    </div> -->
+    </div>-->
     <div class="nav3">
       <!-- <div class="myForm">
         <el-form ref="form" :model="form" label-width="80px">
@@ -98,7 +98,7 @@
             </el-col>
           </el-row>
         </el-form>
-      </div> -->
+      </div>-->
       <div class="myTable">
         <vxe-table :data="tableData">
           <vxe-table-column type="expand" width="30" :fixed="null">
@@ -107,9 +107,7 @@
                 <div class="xiala">
                   <el-row :gutter="20">
                     <el-col :span="6">
-                      <div class="item">
-                        快递单号：{{ row.delivery_code }}
-                      </div>
+                      <div class="item">快递单号：{{ row.delivery_code }}</div>
                     </el-col>
                     <el-col :span="6">
                       <div class="item">快递名称：{{ row.delivery_name }}</div>
@@ -128,32 +126,16 @@
                     </el-col>
                     <!-- <el-col :span="6">
                       <div class="item">虚拟销量：3C数码/手机</div>
-                    </el-col> -->
+                    </el-col>-->
                   </el-row>
                 </div>
               </template>
             </template>
           </vxe-table-column>
-          <vxe-table-column
-            field="trade_no"
-            min-width="180"
-            title="订单号"
-          ></vxe-table-column>
-          <vxe-table-column
-            min-width="80"
-            field="myStatus"
-            title="订单状态"
-          ></vxe-table-column>
-          <vxe-table-column
-            min-width="80"
-            field="real_name"
-            title="用户信息"
-          ></vxe-table-column>
-          <vxe-table-column
-            min-width="120"
-            field="myAble_delivery"
-            title="是否要求发货"
-          ></vxe-table-column>
+          <vxe-table-column field="trade_no" min-width="180" title="订单号"></vxe-table-column>
+          <vxe-table-column min-width="80" field="myStatus" title="订单状态"></vxe-table-column>
+          <vxe-table-column min-width="80" field="real_name" title="用户信息"></vxe-table-column>
+          <vxe-table-column min-width="120" field="myAble_delivery" title="是否要求发货"></vxe-table-column>
           <vxe-table-column
             show-overflow="title"
             field="scope.row.info.product_detail.name"
@@ -162,11 +144,7 @@
           >
             <template slot-scope="scope">
               <div class="shopxx">
-                <img
-                  class="shopImg"
-                  :src="scope.row.info.product_detail.image"
-                  alt=""
-                />
+                <img class="shopImg" :src="scope.row.info.product_detail.image" alt />
                 <div class="txt">
                   {{ scope.row.info.product_detail.name }} |
                   {{ scope.row.info.product_detail.attr_info.suk }}
@@ -174,21 +152,9 @@
               </div>
             </template>
           </vxe-table-column>
-          <vxe-table-column
-            field="info.product_detail.add_time"
-            min-width="160"
-            title="支付时间"
-          ></vxe-table-column>
-          <vxe-table-column
-            field="info.price"
-            min-width="80"
-            title="实际支付"
-          ></vxe-table-column>
-          <vxe-table-column
-            field="myBuy_way"
-            min-width="80"
-            title="支付状态"
-          ></vxe-table-column>
+          <vxe-table-column field="info.product_detail.add_time" min-width="160" title="支付时间"></vxe-table-column>
+          <vxe-table-column field="info.price" min-width="80" title="实际支付"></vxe-table-column>
+          <vxe-table-column field="myBuy_way" min-width="80" title="支付状态"></vxe-table-column>
           <vxe-table-column title="操作状态" width="100">
             <template slot-scope="scope">
               <div class="flex">
@@ -197,14 +163,8 @@
                   size="small"
                   @click="fahuo(scope.row)"
                   type="text"
-                  >发货</el-button
-                >
-                <el-button
-                  size="small"
-                  @click="toEditShop(scope.row)"
-                  type="text"
-                  >删除</el-button
-                >
+                >发货</el-button>
+                <el-button size="small" @click="toEditShop(scope.row)" type="text">删除</el-button>
               </div>
             </template>
           </vxe-table-column>
@@ -218,8 +178,7 @@
           :page-sizes="[10, 15, 20, 30]"
           layout="total,sizes, prev, pager, next, jumper"
           :total="this.total"
-        >
-        </el-pagination>
+        ></el-pagination>
       </div>
     </div>
     <!-- 发货 -->
@@ -244,12 +203,7 @@
             <el-input size="small" v-model="fahuoForm.delivery_name"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button
-              size="small"
-              type="primary"
-              @click="submitForm('fahuoForm')"
-              >发货</el-button
-            >
+            <el-button size="small" type="primary" @click="submitForm('fahuoForm')">发货</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -261,17 +215,17 @@
 import { mapState } from "vuex";
 export default {
   computed: {
-    ...mapState(["dingdanliebiaoPage", "dingdanliebiaoPageSize"]),
+    ...mapState(["dingdanliebiaoPage", "dingdanliebiaoPageSize"])
   },
   watch: {
-    dingdanliebiaoPage: function (page) {
+    dingdanliebiaoPage: function(page) {
       this.$store.commit("dingdanliebiaoPage", page);
       this.getData();
     },
-    dingdanliebiaoPageSize: function (pageSize) {
+    dingdanliebiaoPageSize: function(pageSize) {
       this.$store.commit("dingdanliebiaoPageSize", pageSize);
       this.getData();
-    },
+    }
   },
   data() {
     return {
@@ -281,7 +235,7 @@ export default {
         rad2: "",
         time: [],
         search: "",
-        select: "",
+        select: ""
       },
       tableData: [],
       total: 0,
@@ -289,16 +243,16 @@ export default {
       fahuoDialogVisible: false,
       fahuoForm: {
         delivery_code: "",
-        delivery_name: "",
+        delivery_name: ""
       },
       rules: {
         delivery_code: [
-          { required: true, message: "请输入快递单号", trigger: "blur" },
+          { required: true, message: "请输入快递单号", trigger: "blur" }
         ],
         delivery_name: [
-          { required: true, message: "请输入快递名称", trigger: "blur" },
-        ],
-      },
+          { required: true, message: "请输入快递名称", trigger: "blur" }
+        ]
+      }
     };
   },
   created() {
@@ -308,12 +262,12 @@ export default {
     async getData() {
       const res = await this.$api.orderIndex({
         page: this.dingdanliebiaoPage,
-        limit: this.dingdanliebiaoPageSize,
+        limit: this.dingdanliebiaoPageSize
       });
       console.log(res.data);
       this.total = res.data.total;
       this.tableData = res.data.data;
-      this.tableData.forEach((ele) => {
+      this.tableData.forEach(ele => {
         ele.myAble_delivery = ele.info.able_delivery == 1 ? "是" : "否";
         ele.myBuy_way = ele.paid == "0" ? "未支付" : "已支付";
         if (ele.status == 1) {
@@ -334,18 +288,18 @@ export default {
       });
     },
     async submitForm(formName) {
-      this.$refs[formName].validate(async (valid) => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
           const res = await this.$api.orderDelivery({
             id: this.fahuoId,
             delivery_code: this.fahuoForm.delivery_code,
-            delivery_name: this.fahuoForm.delivery_name,
+            delivery_name: this.fahuoForm.delivery_name
           });
           console.log(res);
           if (res.code == 200) {
             this.$message({
               message: res.msg,
-              type: "success",
+              type: "success"
             });
             this.getData();
             this.fahuoDialogVisible = false;
@@ -366,8 +320,19 @@ export default {
       this.fahuoId = row.id;
       this.fahuoDialogVisible = true;
     },
-    toEditShop(row) {
+    async toEditShop(row) {
       console.log(row);
+      const res = await this.$api.orderDel({
+        id: row.id
+      });
+      console.log(res);
+      if (res.code == 200) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.getData()
+      }
     },
     tabsHandleClick(tab, event) {
       console.log(tab, event);
@@ -383,8 +348,8 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.$store.commit("dingdanliebiaoPage", val);
-    },
-  },
+    }
+  }
 };
 </script>
 

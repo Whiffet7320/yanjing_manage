@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <div class="nav1">
-      <div class="tit1">分销配置</div>
+      <div class="tit1">分销设置</div>
     </div>
     <div class="nav2">
       <div class="myForm">
@@ -68,20 +68,6 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="邀请新用户可获得积分：" prop="get_user_integral">
-                <el-input size="small" v-model="ruleForm.get_user_integral"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="提现最低金额：" prop="withdrawal_limit">
-                <el-input size="small" v-model="ruleForm.withdrawal_limit"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
           <el-form-item>
             <el-button
               icon="el-icon-s-promotion"
@@ -108,8 +94,6 @@ export default {
         agent_lv2: "",
         agent_lv3: "",
         team_brokerage: "",
-        get_user_integral: "",
-        withdrawal_limit: "",
         same_brokerage: ""
       },
       rules: {
@@ -145,16 +129,6 @@ export default {
         ],
         team_brokerage: [
           { required: true, message: "请输入团队分佣比例", trigger: "blur" }
-        ],
-        get_user_integral: [
-          {
-            required: true,
-            message: "请输入邀请新用户可获得积分",
-            trigger: "blur"
-          }
-        ],
-        withdrawal_limit: [
-          { required: true, message: "请输入提现最低金额", trigger: "blur" }
         ],
         same_brokerage: [
           { required: true, message: "请输入平级反佣比例", trigger: "blur" }
@@ -203,14 +177,6 @@ export default {
           await this.$api.webconfigSave({
             tag: "team_brokerage",
             value: this.ruleForm.team_brokerage
-          });
-          await this.$api.webconfigSave({
-            tag: "get_user_integral",
-            value: this.ruleForm.get_user_integral
-          });
-          await this.$api.webconfigSave({
-            tag: "withdrawal_limit",
-            value: this.ruleForm.withdrawal_limit
           });
           const res3 = await this.$api.webconfigSave({
             tag: "same_brokerage",

@@ -361,7 +361,7 @@
                       size="small"
                       v-model="ruleForm.postage"
                     ></el-input>-->
-                    <el-select size="small" v-model="ruleForm.postage">
+                    <el-select size="small" v-model="ruleForm.temp_id">
                       <el-option
                         v-for="item in postageOptions"
                         :key="item.id"
@@ -785,7 +785,7 @@ export default {
         image: "",
         recommend_image: "",
         slider_image: ["", "", "", "", "", "", "", "", "", ""],
-        postage: "", //运费模板
+        temp_id: "", //运费模板
         is_sub: "",
         is_vip: "",
         people: "",
@@ -793,20 +793,7 @@ export default {
         quota: "",
         once_num: ""
       },
-      postageOptions: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        }
-      ],
+      postageOptions: [],
       rules: {
         name: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
         cate_id: [
@@ -902,9 +889,9 @@ export default {
   },
   methods: {
     async getMobanData() {
-      const res = await this.$api.list_shipping_templates();
+      const res = await this.$api.other_shipping_templates();
       console.log(res);
-      this.postageOptions = res.data.data;
+      this.postageOptions = res.data;
     },
     async getData() {
       this.getMobanData();
@@ -1050,7 +1037,7 @@ export default {
       console.log(res);
       if (res.code == 200) {
         this.addPostageDialogVisible = false;
-        this.getMobanData()
+        this.getMobanData();
         this.$message({
           message: res.msg,
           type: "success"
@@ -1088,7 +1075,7 @@ export default {
     },
     // 数组中的对象去重
     unique(arr) {
-      return [...new Set(arr)]
+      return [...new Set(arr)];
     },
     peisongHandleCheckedCitiesChange2(e, city) {
       console.log(e, city);

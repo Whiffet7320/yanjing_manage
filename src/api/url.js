@@ -1,8 +1,8 @@
 export default {
     // baseUrl: '',
-    baseUrl: 'http://192.168.50.142:9083',
+    // baseUrl: 'http://192.168.50.142:9083',
     // baseUrl: 'http://192.168.1.128:8094',
-    // baseUrl:'https://www.tuanxiaotuan.com',
+    baseUrl:'http://pinapi.hxqhhhh.shop',
     login: '/admin/login', //登录
     productList:'/admin/product/list',//商品列表
     loginInfo:'/admin/login/info',
@@ -52,4 +52,22 @@ export default {
     template_message_list:'/admin/template_message_list',//消息模版列表
     template_message_save:'/admin/template_message_save',//模板消息编辑
     user_extract:'/admin/user_extract',//用户提现列表
+    upload_pic:'/admin/upload_pic',//上传轮播图和开屏页图片
+    banner_add:'/admin/banner_add',//轮播图设置
+    banner_list:'/admin/banner_list',//轮播图列表
+    banner_edit:'/admin/banner_edit',//轮播图编辑
+    banner_del:'/admin/banner_del',//轮播图删除
+    open_pic_add:'/admin/open_pic_add',//开屏页设置
+    open_pic:'/admin/open_pic',//开屏页查看
+    open_pic_edit:'/admin/open_pic_edit',//开屏页编辑
+    data_center:'/admin/data_center',//数据中心
+    other_shipping_templates:'/admin/other_shipping_templates',//无分页的
+    orderDel:'/admin/order/del',//订单删除
+    updat_user_info:'/admin/updat_user_info',//修改用户信息
+    article_list:'/admin/article_list',//文章列表
+    article_add:'/admin/article_add',//添加文章
+    article_edit:'/admin/article_edit',//编辑文章
+    article_del:'/admin/article_del',//删除文章
+    user_pintuan_log:'/admin/user_pintuan_log',//拼团记录
+    user_pintuan_count:'/admin/user_pintuan_count',//拼团信息统计
 }

@@ -62,22 +62,22 @@
                 <div class="xiala">
                   <el-row :gutter="20">
                     <el-col :span="6">
-                      <div class="item">商品分类：3C数码/手机</div>
+                      <div class="item">上级邀请人邀请码：{{row.parent_uniqid}}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">商品市场价格：3C数码/手机</div>
+                      <div class="item">邀请总人数：{{row.spread_count}}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">成本价：{{ row.price }}</div>
+                      <div class="item">等级：{{ row.level }}</div>
                     </el-col>
                   </el-row>
                   <div style="margin-top: 16px"></div>
                   <el-row :gutter="20">
                     <el-col :span="6">
-                      <div class="item">收藏：3C数码/手机</div>
+                      <div class="item">积分：{{row.integral}}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">虚拟销量：3C数码/手机</div>
+                      <div class="item">会员过期时间：{{row.myOverdue_vip_time}}</div>
                     </el-col>
                   </el-row>
                 </div>
@@ -98,11 +98,12 @@
           <vxe-table-column field="phone" title="手机号"></vxe-table-column>
           <vxe-table-column field="myIs_vip" title="是否会员"></vxe-table-column>
           <vxe-table-column field="now_money" title="余额"></vxe-table-column>
-          <vxe-table-column title="操作状态" width="140">
+          <vxe-table-column title="操作状态" width="190">
             <template slot-scope="scope">
               <div class="flex">
+                <el-button size="small" @click="toEdit(scope.row)" type="text">编辑</el-button>
                 <el-button size="small" @click="seeMingxi(scope.row)" type="text">查看明细</el-button>
-                <!-- <el-button size="small" @click="toEditShop(scope.row)" type="text">收益明细</el-button> -->
+                <el-button size="small" @click="toPingtuanjilu(scope.row)" type="text">拼团记录</el-button>
               </div>
             </template>
           </vxe-table-column>
@@ -126,17 +127,11 @@
           <el-row>
             <el-col :span="20">
               <el-form-item label="拼团状态：">
-                <el-radio-group v-model="mingxiFrom.rad1" size="small">
+                <el-radio-group @change="changeMingxiRadio" v-model="mingxiFrom.rad1" size="small">
                   <el-radio-button label="1">积分明细</el-radio-button>
                   <el-radio-button label="2">收益明细</el-radio-button>
                   <el-radio-button label="3">资金余额明细</el-radio-button>
                 </el-radio-group>
-                <el-button
-                  style="margin-left:20px"
-                  size="small"
-                  type="primary"
-                  @click="mingxiOnSubmit"
-                >查询</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -148,8 +143,8 @@
           <vxe-table-column field="myPm" title="支出/获得"></vxe-table-column>
           <vxe-table-column field="number" title="变动金额"></vxe-table-column>
           <vxe-table-column field="balance" title="变动后金额"></vxe-table-column>
-          <vxe-table-column field="mark" width='250' title="备注"></vxe-table-column>
-          <vxe-table-column field="pay_way" width='120' title="支付方式"></vxe-table-column>
+          <vxe-table-column field="mark" width="250" title="备注"></vxe-table-column>
+          <vxe-table-column field="pay_way" width="120" title="支付方式"></vxe-table-column>
           <vxe-table-column field="myAdd_time" title="时间"></vxe-table-column>
         </vxe-table>
         <el-pagination
@@ -162,6 +157,33 @@
           layout="total,sizes, prev, pager, next, jumper"
           :total="this.mingxiTotal"
         ></el-pagination>
+      </div>
+    </el-dialog>
+    <!-- 编辑 -->
+    <el-dialog
+      title="编辑"
+      :visible.sync="editDialogVisible"
+      width="30%"
+      :before-close="editHandleClose"
+    >
+      <div class="editForm">
+        <el-form :model="editForm" ref="editForm" label-width="140px" class="demo-ruleForm">
+          <el-form-item label="用户等级：">
+            <el-input size="small" v-model="editForm.level"></el-input>
+          </el-form-item>
+          <el-form-item label="用户密码：">
+            <el-input size="small" v-model="editForm.pwd"></el-input>
+          </el-form-item>
+          <el-form-item label="用户自身的邀请码：">
+            <el-input size="small" v-model="editForm.uniqid"></el-input>
+          </el-form-item>
+          <el-form-item label="邀请人ID：">
+            <el-input size="small" v-model="editForm.spread_uid"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" @click="submitForm">确定</el-button>
+          </el-form-item>
+        </el-form>
       </div>
     </el-dialog>
   </div>
@@ -199,7 +221,15 @@ export default {
       },
       mingxiTableData: [],
       mingxiTotal: 0,
-      mingxiUser_id: ""
+      mingxiUser_id: "",
+      editDialogVisible: false,
+      editForm: {
+        level: "",
+        pwd: "",
+        uniqid: "",
+        spread_uid: ""
+      },
+      editId: ""
     };
   },
   created() {
@@ -216,6 +246,7 @@ export default {
       this.tableData = res.data.data;
       this.tableData.forEach(ele => {
         ele.myIs_vip = ele.is_vip == "1" ? "是" : "否";
+        ele.myOverdue_vip_time = this.formatDate(ele.overdue_vip_time * 1000);
       });
       const res2 = await this.$api.categoryIndex({
         pid: 0
@@ -245,23 +276,61 @@ export default {
       });
       this.mingxiTotal = res.data.total;
     },
+    async submitForm() {
+      const res = await this.$api.updat_user_info({
+        user_id: this.editId,
+        ...this.editForm
+      });
+      console.log(res);
+      if (res.code == 200) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.getData();
+        this.editDialogVisible = false;
+      } else {
+        this.$message.error(res.msg);
+      }
+    },
+    changeMingxiRadio() {
+      this.getMingxiData();
+    },
     tabsHandleClick(tab, event) {
       console.log(tab, event);
+    },
+    toEdit(row) {
+      this.editForm = {
+        level: "",
+        pwd: "",
+        uniqid: "",
+        spread_uid: ""
+      };
+      this.editId = row.user_id;
+      this.editDialogVisible = true;
     },
     async seeMingxi(row) {
       this.mingxiUser_id = row.user_id;
       this.getMingxiData();
       this.dialogVisible = true;
     },
+    toPingtuanjilu(row) {
+      this.$router.push({
+        name: "Pingtuanjilu",
+        params: {
+          userId: row.user_id
+        }
+      });
+    },
     onSubmit() {
       console.log("submit!");
-    },
-    mingxiOnSubmit() {
-      this.getMingxiData();
     },
     onReact() {},
     handleClose() {
       this.dialogVisible = false;
+    },
+    editHandleClose() {
+      this.editDialogVisible = false;
     },
     formatDate(date1) {
       var date = new Date(date1);
@@ -416,6 +485,21 @@ export default {
     line-height: 38px;
     text-align: center;
     border-radius: 4px;
+  }
+}
+.editForm {
+  /deep/ .el-form-item__label {
+    font-size: 12px;
+  }
+  /deep/ .el-form-item {
+    margin-right: 30px;
+    margin-bottom: 20px;
+  }
+  .search {
+    margin-top: 3px;
+    /deep/ .el-select {
+      width: 100px;
+    }
   }
 }
 </style>

@@ -50,22 +50,19 @@
                 <div class="xiala">
                   <el-row :gutter="20">
                     <el-col :span="6">
-                      <div class="item">商品分类：3C数码/手机</div>
+                      <div class="item">热门单品：{{row.is_hot == 1 ? '开启' : '关闭'}}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">商品市场价格：3C数码/手机</div>
+                      <div class="item">新人专享：{{row.is_new_user == 1 ? '开启' : '关闭'}}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">成本价：{{ row.price }}</div>
+                      <div class="item">一分购买：{{ row.is_cheap == 1 ? '开启' : '关闭' }}</div>
                     </el-col>
                   </el-row>
                   <div style="margin-top: 16px"></div>
                   <el-row :gutter="20">
                     <el-col :span="6">
-                      <div class="item">收藏：3C数码/手机</div>
-                    </el-col>
-                    <el-col :span="6">
-                      <div class="item">虚拟销量：3C数码/手机</div>
+                      <div class="item">额外赠送积分：{{ row.give_integral }}</div>
                     </el-col>
                   </el-row>
                 </div>

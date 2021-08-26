@@ -81,16 +81,16 @@
           :model="lhForm"
           :rules="rules"
           ref="lhForm"
-          label-width="80px"
+          label-width="110px"
           class="demo-ruleForm"
         >
-          <el-form-item label="靓号" prop="uniqid_num">
+          <el-form-item label="靓号：" prop="uniqid_num">
             <el-input size="small" v-model="lhForm.uniqid_num"></el-input>
           </el-form-item>
-          <el-form-item label="购买价格" prop="price">
+          <el-form-item label="购买价格：" prop="price">
             <el-input size="small" v-model="lhForm.price"></el-input>
           </el-form-item>
-          <el-form-item label="市场价格" prop="ot_price">
+          <el-form-item label="市场价格：" prop="ot_price">
             <el-input size="small" v-model="lhForm.ot_price"></el-input>
           </el-form-item>
           <el-form-item>
