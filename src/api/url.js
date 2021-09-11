@@ -1,8 +1,8 @@
 export default {
     // baseUrl: '',
-    // baseUrl: 'http://192.168.50.142:9083',
+    baseUrl: 'http://192.168.50.142:9083',
     // baseUrl: 'http://192.168.1.128:8094',
-    baseUrl:'http://pinapi.hxqhhhh.shop',
+    // baseUrl:'http://pinapi.hxqhhhh.shop',
     login: '/admin/login', //登录
     productList:'/admin/product/list',//商品列表
     loginInfo:'/admin/login/info',

@@ -1225,6 +1225,15 @@ export default {
     setTime(val) {
       console.log(val);
     },
+    plszTabSku() {
+      console.log(this.skuTableData1);
+      for (const key in this.skuTableData1[0]) {
+        this.skuTableData.forEach(ele => {
+          this.$set(ele, key, this.skuTableData1[0][key]);
+        });
+      }
+      console.log(this.skuTableData);
+    },
     // 删除图片
     delImg(val, i = 0) {
       console.log(i);

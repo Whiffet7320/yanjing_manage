@@ -10,6 +10,8 @@ import 'viewerjs/dist/viewer.css';
 import 'xe-utils';
 import VXETable from 'vxe-table';
 import 'vxe-table/lib/style.css';
+import VueParticles from 'vue-particles'  
+Vue.use(VueParticles)  
 Vue.use(VXETable)
 
 Vue.prototype.$api = api;
