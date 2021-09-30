@@ -8,7 +8,7 @@ Vue.config.productionTip = false;
 const routes = [{
     path: '/',
     name: 'Home',
-    component: () => import('./components/Home'),
+    component: () => import('./components/Home/Shouye'),
     children: [{
         path: 'Shouye',
         name: 'Shouye',

@@ -7,17 +7,14 @@ axios.defaults.headers['Content-Type'] = "application/json;charset=UTF-8";
 let myPost = axios.create({
     baseURL: urls.baseUrl,
     method: 'post',
-    timeout: 1000,
 })
 let myGet = axios.create({
     baseURL: urls.baseUrl,
     method: 'get',
-    timeout: 1000,
 })
 let myDelete = axios.create({
     baseURL: urls.baseUrl,
     method: 'delete',
-    timeout: 1000,
 })
 
 myDelete.interceptors.request.use(config => {
@@ -678,6 +675,14 @@ export default {
         return myGet({
             url: urls.user_pintuan_count,
             params: {
+                ...obj
+            }
+        })
+    },
+    combinationDel(obj) {
+        return myPost({
+            url: urls.combinationDel,
+            data: {
                 ...obj
             }
         })

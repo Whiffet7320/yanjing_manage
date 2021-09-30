@@ -420,8 +420,8 @@
                 <el-col :span="14">
                   <el-form-item label="单独设置：">
                     <el-checkbox-group v-model="qtszForm.ddsz">
-                      <el-checkbox label="佣金设置"></el-checkbox>
-                      <el-checkbox label="付费会员价"></el-checkbox>
+                      <el-checkbox @change="checked=>changeMyCheck(checked, '佣金设置')" label="佣金设置"></el-checkbox>
+                      <el-checkbox @change="checked=>changeMyCheck(checked, '付费会员价')" label="付费会员价"></el-checkbox>
                     </el-checkbox-group>
                   </el-form-item>
                 </el-col>
@@ -707,26 +707,31 @@ export default {
     ...mapState(["pintuanShopObj"])
   },
   watch: {
-    "qtszForm.ddsz": function() {
-      if (this.qtszForm.ddsz) {
-        if (this.qtszForm.ddsz.indexOf("佣金设置") > -1) {
-          this.ddsz = true;
-          this.yjsz = true;
-          this.ruleForm.is_sub = "1";
-        } else {
-          this.yjsz = false;
-          this.ruleForm.is_sub = "";
-        }
-        if (this.qtszForm.ddsz.indexOf("付费会员价") > -1) {
-          this.ddsz = true;
-          this.hyjsz = true;
-          this.ruleForm.is_vip = "1";
-        } else {
-          this.hyjsz = false;
-          this.ruleForm.is_vip = "";
-        }
-        if (this.qtszForm.ddsz.length == 0) {
-          this.ddsz = false;
+    "qtszForm.ddsz": {
+      immediate: true,
+      deep:true,
+      handler() {
+        console.log(this.qtszForm.ddsz);
+        if (this.qtszForm.ddsz) {
+          if (this.qtszForm.ddsz.indexOf("佣金设置") > -1) {
+            this.ddsz = true;
+            this.yjsz = true;
+            this.ruleForm.is_sub = "1";
+          } else {
+            this.yjsz = false;
+            this.ruleForm.is_sub = "";
+          }
+          if (this.qtszForm.ddsz.indexOf("付费会员价") > -1) {
+            this.ddsz = true;
+            this.hyjsz = true;
+            this.ruleForm.is_vip = "1";
+          } else {
+            this.hyjsz = false;
+            this.ruleForm.is_vip = "";
+          }
+          if (this.qtszForm.ddsz.length == 0) {
+            this.ddsz = false;
+          }
         }
       }
     }
@@ -916,14 +921,7 @@ export default {
       // this.options = res.data;
       console.log(this.pintuanShopObj);
       if (this.pintuanShopObj) {
-        this.qtszForm.ddsz = [];
         // 编辑
-        if (this.pintuanShopObj.is_sub == 1) {
-          this.qtszForm.ddsz.push("佣金设置");
-        }
-        if (this.pintuanShopObj.is_vip == 1) {
-          this.qtszForm.ddsz.push("付费会员价");
-        }
         const res = await this.$api.combinationAttrs(this.pintuanShopObj.id);
         console.log(res);
         this.sku = res.data.attr;
@@ -951,12 +949,20 @@ export default {
           sales: this.pintuanShopObj.sales,
           give_integral: this.pintuanShopObj.give_integral,
           sort: this.pintuanShopObj.sort,
+          ddsz:[],
           is_show: this.pintuanShopObj.is_show == 1 ? "上架" : "下架",
           is_hot: this.pintuanShopObj.is_hot == 1 ? "开启" : "关闭",
           is_cheap: this.pintuanShopObj.is_cheap == 1 ? "开启" : "关闭",
           is_new_user: this.pintuanShopObj.is_new_user == 1 ? "开启" : "关闭",
           pick_people: this.pintuanShopObj.pick_people
         };
+        // this.qtszForm.ddsz = [];
+        if (this.pintuanShopObj.is_sub == 1) {
+          this.qtszForm.ddsz.push("佣金设置");
+        }
+        if (this.pintuanShopObj.is_vip == 1) {
+          this.qtszForm.ddsz.push("付费会员价");
+        }
         // 分类
         // this.ruleForm.cate_id = [
         //   this.pintuanShopObj.product_cate_arr.cate_pid,
@@ -970,8 +976,22 @@ export default {
         //   this.pintuanShopObj.start_time * 1000,
         //   this.pintuanShopObj.stop_time * 1000,
         // ];
-        console.log(this.ruleForm.pingtuanTime);
+        console.log(this.ruleForm.pingtuanTime, 11111111);
+        console.log(this.qtszForm.ddsz);
       }
+    },
+    changeMyCheck(e, val) {
+      console.log(e, val);
+      // this.qtszForm.ddsz = ['佣金设置']
+      // // if(e){
+      // //   // if (this.qtszForm.ddsz.indexOf("佣金设置") > -1) {
+      // //   //   return
+      // //   // }
+      // //   // this.qtszForm.ddsz.push(val)
+      // // }else{
+      // //   this.qtszForm.ddsz.remove(val)
+      // // }
+      // console.log(this.qtszForm.ddsz);
     },
     addSheng() {
       console.log(this.peisongCheckedCities);

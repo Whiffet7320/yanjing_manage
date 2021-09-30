@@ -1,6 +1,6 @@
 export default {
-    // baseUrl: '',
-    baseUrl: 'http://192.168.50.142:9083',
+    baseUrl: 'http://pin.5laoye.com',
+    // baseUrl: 'http://192.168.50.142:9083',
     // baseUrl: 'http://192.168.1.128:8094',
     // baseUrl:'http://pinapi.hxqhhhh.shop',
     login: '/admin/login', //登录
@@ -13,6 +13,7 @@ export default {
     categoryDel:'/admin/category/del',//商品分类删除
     productAttrs:'/admin/product/attrs',//获取商品规格属性
     productDescription:'/admin/product/description',//获取商品详情
+    combinationDel:'/admin/combination/del',//删除拼团商品
     combinationSave:'/admin/combination/save',//添加拼团商品
     combinationList:'/admin/combination/list',//拼团商品列表
     combinationAttrs:'/admin/combination/attrs',//获取拼团商品规格

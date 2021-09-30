@@ -587,6 +587,7 @@ export default {
       this.addForm.pic = row.pic;
       this.addForm.desc = row.desc;
       this.addForm.add_name = row.name;
+      this.addForm.category_id = row.category_id;
       this.addForm.add_time = [];
       this.addForm.add_time[0] = row.start_time * 1000;
       this.addForm.add_time[1] = row.stop_time * 1000;
@@ -637,9 +638,9 @@ export default {
     },
     async seeShop(row) {
       console.log(row);
-      this.seeId = row.category_id;
+      this.seeId = row.id;
       const res = await this.$api.activityList_product({
-        activity_id: row.category_id,
+        activity_id: row.id,
         limit: this.maichanghuodongSeeShopPageSize,
         page: this.maichanghuodongSeeShopPage,
       });

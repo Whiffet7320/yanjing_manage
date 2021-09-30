@@ -106,15 +106,15 @@
                   type="text"
                   >编辑</el-button
                 >
-                <el-button
+                <!-- <el-button
                   size="small"
                   @click="toEditShop(scope.row)"
                   type="text"
                   >查看评论</el-button
-                >
+                > -->
                 <el-button
                   size="small"
-                  @click="toEditShop(scope.row)"
+                  @click="toEditDel(scope.row)"
                   type="text"
                   >删除</el-button
                 >
@@ -204,6 +204,18 @@ export default {
       console.log(row);
       this.$store.commit("pintuanShopObj", row);
       this.$router.push({ name: "Tianjiapingtuanshangping" });
+    },
+    async toEditDel(row){
+      const res = await this.$api.combinationDel({
+        id:row.id
+      })
+      if (res.code == 200) {
+        this.$message({
+          message: res.msg,
+          type: "success",
+        });
+        this.getData();
+      }
     },
     onSubmit() {
       this.getData()

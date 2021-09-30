@@ -114,12 +114,12 @@
                   type="text"
                   >编辑</el-button
                 >
-                <el-button
+                <!-- <el-button
                   size="small"
                   @click="toEditShop(scope.row)"
                   type="text"
                   >查看评论</el-button
-                >
+                > -->
                 <el-button
                   size="small"
                   @click="toEditShop(scope.row)"

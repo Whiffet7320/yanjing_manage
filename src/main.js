@@ -16,7 +16,7 @@ Vue.use(VXETable)
 
 Vue.prototype.$api = api;
 // Vue.prototype.$url = 'http://192.168.1.128:8094/admin'
-Vue.prototype.$url = 'http://pinapi.hxqhhhh.shop'
+Vue.prototype.$url = 'http://pin.5laoye.com'
 // Vue.prototype.$url = 'http://192.168.50.142:9083'
 
 Vue.use(ElementUI);
