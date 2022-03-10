@@ -19,24 +19,21 @@
       </el-row>
     </div>-->
     <div class="nav3">
-      <!-- <div class="myForm">
+      <div class="myForm">
         <el-form ref="form" :model="form" label-width="80px">
           <el-row>
             <el-col :span="20">
               <el-form-item label="订单状态：">
-                <el-radio-group v-model="form.rad1" size="small">
-                  <el-radio-button label="全部"></el-radio-button>
-                  <el-radio-button label="未支付"></el-radio-button>
-                  <el-radio-button label="未发货"></el-radio-button>
-                  <el-radio-button label="待收货"></el-radio-button>
-                  <el-radio-button label="待评价"></el-radio-button>
-                  <el-radio-button label="交易完成"></el-radio-button>
-                  <el-radio-button label="已删除"></el-radio-button>
+                <el-radio-group @change='changeRad1' v-model="form.rad1" size="small">
+                  <el-radio-button label="0">待发货</el-radio-button>
+                  <el-radio-button label="1">待收货</el-radio-button>
+                  <el-radio-button label="2">待评价</el-radio-button>
+                  <el-radio-button label="3">交易完成</el-radio-button>
                 </el-radio-group>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <!-- <el-row>
             <el-col :span="20">
               <el-form-item label="支付方式：">
                 <el-radio-group v-model="form.rad2" size="small">
@@ -96,9 +93,9 @@
                 </div>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row>-->
         </el-form>
-      </div>-->
+      </div>
       <div class="myTable">
         <vxe-table :data="tableData">
           <vxe-table-column type="expand" width="30" :fixed="null">
@@ -107,59 +104,59 @@
                 <div class="xiala">
                   <el-row :gutter="20">
                     <el-col :span="6">
-                      <div class="item">快递单号：{{ row.delivery_code }}</div>
+                      <div class="item">快递单号：{{ row.express_code ? row.express_code : '无'}}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">快递名称：{{ row.delivery_name }}</div>
+                      <div class="item">快递名称：{{ row.express_name ? row.express_name : '无' }}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">购买数量：{{ row.info.buy_num }}</div>
-                    </el-col>
-                    <el-col :span="6">
-                      <div class="item">邮费：{{ row.info.postage }}</div>
+                      <div class="item">邮费：{{ row.total_postage ? row.total_postage : '无'}}</div>
                     </el-col>
                   </el-row>
-                  <div style="margin-top: 16px"></div>
+                  <!-- <div style="margin-top: 16px"></div>
                   <el-row :gutter="20">
                     <el-col :span="20">
                       <div class="item">用户备注：无</div>
                     </el-col>
-                    <!-- <el-col :span="6">
-                      <div class="item">虚拟销量：3C数码/手机</div>
-                    </el-col>-->
-                  </el-row>
+                  </el-row>-->
                 </div>
               </template>
             </template>
           </vxe-table-column>
           <vxe-table-column field="trade_no" min-width="180" title="订单号"></vxe-table-column>
           <vxe-table-column min-width="80" field="myStatus" title="订单状态"></vxe-table-column>
-          <vxe-table-column min-width="80" field="real_name" title="用户信息"></vxe-table-column>
-          <vxe-table-column min-width="120" field="myAble_delivery" title="是否要求发货"></vxe-table-column>
+          <vxe-table-column min-width="80" field="real_name" title="用户信息">
+            <template slot-scope="scope">
+              <div
+                style="font-size:12px"
+              >{{scope.row.addressinfo.real_name_first}} {{scope.row.addressinfo.real_name_second}}</div>
+            </template>
+          </vxe-table-column>
           <vxe-table-column
             show-overflow="title"
-            field="scope.row.info.product_detail.name"
+            field="scope.row.orderinfo"
             min-width="200"
             title="商品信息"
           >
             <template slot-scope="scope">
-              <div class="shopxx">
-                <img class="shopImg" :src="scope.row.info.product_detail.image" alt />
+              <div class="shopxx" v-for="item in scope.row.orderinfo" :key="item.id">
+                <img class="shopImg" :src="item.product_img" alt />
                 <div class="txt">
-                  {{ scope.row.info.product_detail.name }} |
-                  {{ scope.row.info.product_detail.attr_info.suk }}
+                  {{ item.product_name }} |
+                  {{ item.color_name }} |
+                  {{ item.product_price }}元
                 </div>
               </div>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="info.product_detail.add_time" min-width="160" title="支付时间"></vxe-table-column>
-          <vxe-table-column field="info.price" min-width="80" title="实际支付"></vxe-table-column>
-          <vxe-table-column field="myBuy_way" min-width="80" title="支付状态"></vxe-table-column>
+          <vxe-table-column field="add_time" min-width="160" title="支付时间"></vxe-table-column>
+          <vxe-table-column field="pay_price" min-width="80" title="实际支付"></vxe-table-column>
+          <vxe-table-column field="myStatus" min-width="80" title="支付状态"></vxe-table-column>
           <vxe-table-column title="操作状态" width="100">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button
-                  v-if="scope.row.status == 2"
+                  v-if="scope.row.status == 0"
                   size="small"
                   @click="fahuo(scope.row)"
                   type="text"
@@ -196,11 +193,11 @@
           label-width="100px"
           class="demo-ruleForm"
         >
-          <el-form-item label="快递单号" prop="delivery_code">
-            <el-input size="small" v-model="fahuoForm.delivery_code"></el-input>
+          <el-form-item label="快递单号" prop="express_code">
+            <el-input size="small" v-model="fahuoForm.express_code"></el-input>
           </el-form-item>
-          <el-form-item label="快递名称" prop="delivery_name">
-            <el-input size="small" v-model="fahuoForm.delivery_name"></el-input>
+          <el-form-item label="快递名称" prop="express_name">
+            <el-input size="small" v-model="fahuoForm.express_name"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" @click="submitForm('fahuoForm')">发货</el-button>
@@ -231,7 +228,7 @@ export default {
     return {
       activeName: "3",
       form: {
-        rad1: "",
+        rad1: "0",
         rad2: "",
         time: [],
         search: "",
@@ -242,14 +239,14 @@ export default {
       fahuoId: "",
       fahuoDialogVisible: false,
       fahuoForm: {
-        delivery_code: "",
-        delivery_name: ""
+        express_code: "",
+        express_name: ""
       },
       rules: {
-        delivery_code: [
+        express_code: [
           { required: true, message: "请输入快递单号", trigger: "blur" }
         ],
-        delivery_name: [
+        express_name: [
           { required: true, message: "请输入快递名称", trigger: "blur" }
         ]
       }
@@ -260,51 +257,46 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.orderIndex({
+      const res = await this.$api.order_list({
         page: this.dingdanliebiaoPage,
-        limit: this.dingdanliebiaoPageSize
+        limit: this.dingdanliebiaoPageSize,
+        status: this.form.rad1
       });
       console.log(res.data);
       this.total = res.data.total;
       this.tableData = res.data.data;
       this.tableData.forEach(ele => {
-        ele.myAble_delivery = ele.info.able_delivery == 1 ? "是" : "否";
-        ele.myBuy_way = ele.paid == "0" ? "未支付" : "已支付";
-        if (ele.status == 1) {
-          ele.myStatus = "待支付";
-        } else if (ele.status == 2) {
+        // ele.myAble_delivery = ele.info.able_delivery == 1 ? "是" : "否";
+        // ele.myBuy_way = ele.paid == "0" ? "未支付" : "已支付";
+        if (ele.status == 0) {
           ele.myStatus = "待发货";
-        } else if (ele.status == 3) {
+        } else if (ele.status == 1) {
           ele.myStatus = "待收货";
-        } else if (ele.status == 4) {
+        } else if (ele.status == 2) {
+          ele.myStatus = "待评价";
+        } else if (ele.status == 3) {
           ele.myStatus = "已完成";
-        } else if (ele.status == 5) {
-          ele.myStatus = "已取消";
-        } else if (ele.status == 6) {
-          ele.myStatus = "已关闭";
-        } else if (ele.status == 0) {
-          ele.myStatus = "待确认";
         }
       });
     },
     async submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          const res = await this.$api.orderDelivery({
+          const res = await this.$api.order_send({
             id: this.fahuoId,
-            delivery_code: this.fahuoForm.delivery_code,
-            delivery_name: this.fahuoForm.delivery_name
+            express_code: this.fahuoForm.express_code,
+            express_name: this.fahuoForm.express_name
           });
           console.log(res);
           if (res.code == 200) {
             this.$message({
-              message: res.msg,
+              message: res.message,
               type: "success"
             });
             this.getData();
             this.fahuoDialogVisible = false;
           } else {
-            this.$message.error(res.msg);
+            this.$message.error(res.message);
           }
         } else {
           console.log("error submit!!");
@@ -314,6 +306,9 @@ export default {
     },
     onSubmit() {
       console.log(this.form);
+    },
+    changeRad1(){
+      this.getData()
     },
     fahuo(row) {
       console.log(row);
@@ -331,7 +326,7 @@ export default {
           message: res.msg,
           type: "success"
         });
-        this.getData()
+        this.getData();
       }
     },
     tabsHandleClick(tab, event) {
@@ -425,6 +420,7 @@ export default {
     }
     /deep/ .vxe-cell {
       white-space: normal !important;
+      overflow: visible !important;
     }
     /deep/ .vxe-table--render-default .vxe-body--column {
       line-height: 14px;
@@ -444,11 +440,16 @@ export default {
       text-align: center;
       border-radius: 4px;
     }
+    /deep/ .vxe-cell {
+      max-height: none;
+      padding: 6px 10px;
+    }
   }
 }
 .shopxx {
   display: flex;
   align-items: center;
+  margin: 4px 0;
   .shopImg {
     width: 40px;
     height: 40px;

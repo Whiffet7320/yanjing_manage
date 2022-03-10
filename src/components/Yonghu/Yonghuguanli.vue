@@ -84,7 +84,7 @@
               </template>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="user_id" title="ID"></vxe-table-column>
+          <vxe-table-column field="uid" title="ID"></vxe-table-column>
           <vxe-table-column field="avatar" title="头像">
             <template slot-scope="scope">
               <el-image :src="scope.row.avatar" fit="fill" style="width: 40px; height: 40px">
@@ -95,10 +95,10 @@
             </template>
           </vxe-table-column>
           <vxe-table-column field="nickname" title="姓名"></vxe-table-column>
-          <vxe-table-column field="phone" title="手机号"></vxe-table-column>
+          <vxe-table-column field="account" title="账号"></vxe-table-column>
           <vxe-table-column field="myIs_vip" title="是否会员"></vxe-table-column>
           <vxe-table-column field="now_money" title="余额"></vxe-table-column>
-          <vxe-table-column title="操作状态" width="190">
+          <!-- <vxe-table-column title="操作状态" width="160">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button size="small" @click="toEdit(scope.row)" type="text">编辑</el-button>
@@ -106,7 +106,7 @@
                 <el-button size="small" @click="toPingtuanjilu(scope.row)" type="text">拼团记录</el-button>
               </div>
             </template>
-          </vxe-table-column>
+          </vxe-table-column> -->
         </vxe-table>
         <el-pagination
           class="fenye"
@@ -237,7 +237,7 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.userIndex({
+      const res = await this.$api.user_list({
         limit: this.yonghuguanliPageSize,
         page: this.yonghuguanliPage
       });

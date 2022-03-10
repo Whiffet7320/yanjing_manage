@@ -2,22 +2,22 @@
   <div class="index">
     <div class="nav1">
       <div class="tit1">商品管理</div>
-      <div class="tit2">
+      <!-- <div class="tit2">
         <el-tabs v-model="activeName" @tab-click="tabsHandleClick">
           <el-tab-pane label="出售中的商品" name="1"></el-tab-pane>
           <el-tab-pane label="下架的商品" name="2"></el-tab-pane>
           <el-tab-pane label="已经售馨商品" name="3"></el-tab-pane>
         </el-tabs>
-      </div>
+      </div> -->
     </div>
     <div class="nav2">
-      <div class="myForm">
+      <!-- <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="商品分类：">
             <el-cascader
               size="small"
               :options="options"
-              :props="{ checkStrictly: true }"
+              :props="{ checkStrictly: true, value: 'id',label: 'category_name'}"
               clearable
             ></el-cascader>
           </el-form-item>
@@ -34,7 +34,7 @@
             >
           </el-form-item>
         </el-form>
-      </div>
+      </div> -->
       <div class="tit1">
         <el-button
           @click="toAddShop"
@@ -75,10 +75,11 @@
             </template>
           </vxe-table-column>
           <vxe-table-column field="id" title="商品ID"></vxe-table-column>
-          <vxe-table-column field="role" title="商品图">
+          <vxe-table-column field="product_num" title="商品编号"></vxe-table-column>
+          <vxe-table-column field="role" title="商品封面图片">
             <template slot-scope="scope">
               <el-image
-                :src="scope.row.image"
+                :src="scope.row.product_img"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >
@@ -92,20 +93,25 @@
             field="product_name"
             title="商品名称"
           ></vxe-table-column>
-          <vxe-table-column field="price" title="商品售价"></vxe-table-column>
-          <vxe-table-column field="ficti" title="销量"></vxe-table-column>
-          <vxe-table-column field="stock" title="库存"></vxe-table-column>
-          <vxe-table-column field="sort" title="排序"></vxe-table-column>
-          <vxe-table-column field="is_show" title="状态(是否上架)">
+          <vxe-table-column field="product_price" title="商品售价"></vxe-table-column>
+          <!-- <vxe-table-column field="ficti" title="销量"></vxe-table-column> -->
+          <!-- <vxe-table-column field="stock" title="库存"></vxe-table-column> -->
+          <vxe-table-column field="status" title="状态(是否显示)">
             <template slot-scope="scope">
               <el-switch
                 @change="changeKG(scope.row)"
-                v-model="scope.row.is_showKG"
+                v-model="scope.row.myStatus"
               >
               </el-switch>
             </template>
           </vxe-table-column>
-          <vxe-table-column title="操作状态" width="180">
+          <vxe-table-column field="myJingxuan" title="是否精选">
+          </vxe-table-column>
+          <vxe-table-column field="myShangxin" title="是否上心">
+          </vxe-table-column>
+          <vxe-table-column field="myRexiao" title="是否热销">
+          </vxe-table-column>
+          <vxe-table-column title="操作状态" width="120">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button
@@ -122,7 +128,7 @@
                 > -->
                 <el-button
                   size="small"
-                  @click="toEditShop(scope.row)"
+                  @click="toDelShop(scope.row)"
                   type="text"
                   >删除</el-button
                 >
@@ -164,10 +170,14 @@ export default {
   },
   data() {
     return {
-      activeName: "3",
+      // activeName: "3",
       formInline: {
-        user: "",
-        region: "",
+        country_pos: "",
+        country_code: "",
+        country_name: "",
+        country_english_name: "",
+        two_code: "",
+        three_code: "",
       },
       options: [],
       tableData: [],
@@ -179,7 +189,7 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.productList({
+      const res = await this.$api.product({
         limit: this.shangpingliebiaoPageSize,
         page: this.shangpingliebiaoPage,
       });
@@ -187,33 +197,26 @@ export default {
       this.total = res.data.total;
       this.tableData = res.data.data;
       this.tableData.forEach((ele) => {
-        ele.is_showKG = ele.is_show == "1" ? true : false;
+        ele.myStatus = ele.status == "1" ? true : false;
+        ele.myJingxuan = ele.jingxuan == "1" ? '是' : '否';
+        ele.myShangxin = ele.shangxin == "1" ? '是' : '否';
+        ele.myRexiao = ele.rexiao == "1" ? '是' : '否';
       });
-      const res2 = await this.$api.categoryIndex({
+      const res2 = await this.$api.category({
         pid: 0,
       });
-      res2.data.forEach((ele) => {
-        ele.value = ele.id;
-        ele.label = ele.cate_name;
-        if (ele.children) {
-          ele.children.forEach((item) => {
-            item.value = item.id;
-            item.label = item.cate_name;
-          });
-        }
-      });
-      this.options = res2.data;
+      this.options = res2.data.data;
     },
     // 开关（上架/下架）
     async changeKG(row) {
       console.log(row);
-      const res = await this.$api.productShow({
+      const res = await this.$api.product_status({
         id: row.id,
-        show: row.is_showKG == true ? "1" : "0",
+        status: row.myStatus == true ? "1" : "0",
       });
       if (res.code == 200) {
         this.$message({
-          message: res.msg,
+          message: res.message,
           type: "success",
         });
         this.getData();
@@ -223,6 +226,16 @@ export default {
       console.log(row);
       this.$store.commit("shopObj", row);
       this.$router.push({ name: "Tianjiashangping" });
+    },
+    async toDelShop(row){
+      const res = await this.$api.deleteProduct(row.id)
+      if (res.code == 200) {
+        this.$message({
+          message: res.message,
+          type: "success",
+        });
+        this.getData();
+      }
     },
     tabsHandleClick(tab, event) {
       console.log(tab, event);

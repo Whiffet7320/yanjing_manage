@@ -38,6 +38,42 @@ const routes = [{
         path: 'Yunfeimoban',
         name: 'Yunfeimoban',
         component: () => import('./components/Shangpin/Yunfeimoban'),
+    }, {
+        path: 'Shangpincangkuguanli',
+        name: 'Shangpincangkuguanli',
+        component: () => import('./components/Shangpin/Shangpincangkuguanli'),
+    }, {
+        path: 'Chicunguanli',
+        name: 'Chicunguanli',
+        component: () => import('./components/Shangpin/Chicunguanli'),
+    }, {
+        path: 'TianjiaShangpincangku',
+        name: 'TianjiaShangpincangku',
+        component: () => import('./components/Shangpin/TianjiaShangpincangku'),
+    }, {
+        path: 'Yanseguanli',
+        name: 'Yanseguanli',
+        component: () => import('./components/Shangpin/Yanseguanli'),
+    }, {
+        path: 'Yanjingfenleiguanli',
+        name: 'Yanjingfenleiguanli',
+        component: () => import('./components/Shangpin/Yanjingfenleiguanli'),
+    }, {
+        path: 'Tucengguanli',
+        name: 'Tucengguanli',
+        component: () => import('./components/Shangpin/Tucengguanli'),
+    }, {
+        path: 'Biaoqianguanli',
+        name: 'Biaoqianguanli',
+        component: () => import('./components/Shangpin/Biaoqianguanli'),
+    }, {
+        path: 'Pianguangduguanli',
+        name: 'Pianguangduguanli',
+        component: () => import('./components/Shangpin/Pianguangduguanli'),
+    }, {
+        path: 'Yanjingdengjifenlei',
+        name: 'Yanjingdengjifenlei',
+        component: () => import('./components/Shangpin/Yanjingdengjifenlei'),
     }, ]
 }, {
     path: '/Dingdan',
@@ -153,6 +189,14 @@ const routes = [{
         path: 'Shujuzhongxin',
         name: 'Shujuzhongxin',
         component: () => import('./components/Shezhi/Shujuzhongxin'),
+    }, {
+        path: 'Guojiaguanli',
+        name: 'Guojiaguanli',
+        component: () => import('./components/Shezhi/Guojiaguanli'),
+    }, {
+        path: 'Youhuiquan',
+        name: 'Youhuiquan',
+        component: () => import('./components/Shezhi/Youhuiquan'),
     }]
 }, ]
 

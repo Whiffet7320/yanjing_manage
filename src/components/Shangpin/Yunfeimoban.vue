@@ -10,14 +10,14 @@
       <div class="myTable">
         <vxe-table align="center" :data="tableData">
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column field="name" title="模板名称"></vxe-table-column>
-          <vxe-table-column field="myType" title="分类"></vxe-table-column>
-          <vxe-table-column field="sort" title="排序"></vxe-table-column>
+          <vxe-table-column field="province_name" title="国家名字"></vxe-table-column>
+          <vxe-table-column field="min_price" title="多少金额免邮"></vxe-table-column>
+          <vxe-table-column field="shipping_price" title="运费"></vxe-table-column>
           <vxe-table-column field="add_time" title="添加时间"></vxe-table-column>
           <vxe-table-column title="操作" width="180">
             <template slot-scope="scope">
               <div class="flex">
-                <!-- <el-button size="small" type="text" @click="tabEdit(scope.row)">编辑</el-button> -->
+                <el-button size="small" type="text" @click="tabEdit(scope.row)">编辑</el-button>
                 <el-button size="small" type="text" @click="tabDel(scope.row)">删除</el-button>
               </div>
             </template>
@@ -39,46 +39,27 @@
     <el-dialog
       title="运费模板"
       :visible.sync="addPostageDialogVisible"
-      width="60%"
+      width="900px"
       :before-close="addPostageHandleClose"
     >
       <div class="myForm">
         <el-form ref="form" :model="addPostageForm" label-width="130px">
-          <el-form-item label="模板名称：">
-            <el-input size="small" v-model="addPostageForm.name"></el-input>
-          </el-form-item>
-          <el-form-item label="计费方式：">
-            <el-radio-group v-model="addPostageForm.type">
-              <el-radio label="1">按件数</el-radio>
-              <el-radio label="2">按重量</el-radio>
-            </el-radio-group>
-          </el-form-item>
           <el-form-item label="配送区域及运费：">
             <div class="mySkuaddPostageTable">
               <vxe-table border align="center" :data="addPostageData1">
-                <vxe-table-column field="name" width="130" title="可配送区域">
+                <vxe-table-column field="province_name" width="300" title="可配送区域">
                   <template #default="{ row }">
-                    <el-input disabled v-model="row.region[0].name"></el-input>
+                    <el-input disabled v-model="row.province_name"></el-input>
                   </template>
                 </vxe-table-column>
-                <vxe-table-column field="first" width="130" title="首件">
+                <vxe-table-column field="shipping_price" width="130" title="运费">
                   <template #default="{ row }">
-                    <el-input type="number" v-model="row.first"></el-input>
+                    <el-input type="number" v-model="row.shipping_price"></el-input>
                   </template>
                 </vxe-table-column>
-                <vxe-table-column field="price" width="130" title="运费（元）">
+                <vxe-table-column field="min_price" width="130" title="多少金额免邮">
                   <template #default="{ row }">
-                    <el-input type="number" v-model="row.price"></el-input>
-                  </template>
-                </vxe-table-column>
-                <vxe-table-column field="continue" width="130" title="续件">
-                  <template #default="{ row }">
-                    <el-input type="number" v-model="row.continue"></el-input>
-                  </template>
-                </vxe-table-column>
-                <vxe-table-column field="continue_price" width="130" title="续费（元）">
-                  <template #default="{ row }">
-                    <el-input type="number" v-model="row.continue_price"></el-input>
+                    <el-input type="number" v-model="row.min_price"></el-input>
                   </template>
                 </vxe-table-column>
                 <vxe-table-column field="volume" width="170" title="操作">
@@ -100,9 +81,6 @@
               单独添加配送区域
             </el-button>
           </el-form-item>
-          <el-form-item label="排序：">
-            <el-input size="small" v-model="addPostageForm.sort"></el-input>
-          </el-form-item>
           <el-form-item>
             <el-button @click="addShengshiquOnSubmit" size="small" type="primary">立即提交</el-button>
           </el-form-item>
@@ -113,7 +91,7 @@
     <el-dialog
       title="选择可配送区域"
       :visible.sync="peisongDialogVisible"
-      width="60%"
+      width="1100px"
       :before-close="peisongHandleClose"
     >
       <div class="peisongBox">
@@ -125,35 +103,13 @@
           >全选</el-checkbox>
         </div>
         <div class="nav2">
-          <el-checkbox-group
-            v-model="peisongCheckedCities"
-            @change="peisongHandleCheckedCitiesChange"
-          >
-            <el-popover
-              v-for="(city,i) in shengJson"
-              :key="i"
-              placement="bottom"
-              width="320"
-              trigger="hover"
-            >
-              <el-checkbox-group
-                v-model="city.peisongCheckedCities"
-                @change="checked=>peisongHandleCheckedCitiesChange2(checked, city)"
-              >
-                <!-- 市 -->
-                <el-checkbox
-                  class="shi"
-                  v-for="(item,index) in city.children"
-                  :key="index"
-                  :label="item"
-                >{{item}}</el-checkbox>
-              </el-checkbox-group>
-              <el-checkbox
-                @change="checked=>peisongChange(checked, city)"
-                slot="reference"
-                :label="city"
-              >{{city.shengVal}}</el-checkbox>
-            </el-popover>
+          <el-checkbox-group v-model="myAddressCheckList">
+            <el-checkbox
+              v-for="item in cityLList"
+              :key="item.id"
+              @change="checked=>peisongChange(checked,item)"
+              :label="item.id"
+            >{{item.country_pos}}-{{item.country_name}}</el-checkbox>
           </el-checkbox-group>
         </div>
         <el-button
@@ -186,6 +142,8 @@ export default {
   },
   data() {
     return {
+      cityLList: [],
+      myAddressCheckList: [],
       tableData: [],
       total: 0,
       // 选择可配送区域
@@ -206,16 +164,12 @@ export default {
         appoint_info: ""
       },
       // 批量addPostageSku表格
-      addPostageData1: [
-        {
-          region: [{ name: "默认全国", children: [] }],
-          first: 1,
-          price: 0,
-          continue: 1,
-          continue_price: 0,
-          regionName: "默认全国"
-        }
-      ]
+      addPostageData1: [],
+      province_id: [],
+      province_name: [],
+      arr: [],
+      isAdd: true,
+      id:''
     };
   },
   created() {
@@ -223,7 +177,7 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.list_shipping_templates({
+      const res = await this.$api.shipping_region({
         limit: this.yunfeimubanliebiaoPageSize,
         page: this.yunfeimubanliebiaoPage
       });
@@ -233,129 +187,130 @@ export default {
       this.tableData.forEach(ele => {
         ele.myType = ele.type == "1" ? "按件数" : "按重量";
       });
+      const res2 = await this.$api.country({ page: 1, limit: 10000 });
+      this.cityLList = res2.data.data;
     },
     // 编辑运费模板
     async tabEdit(row) {
-      this.addPostageDialogVisible = true;
-      const res = await this.$api.detail_shipping_templates({
-        id: row.id
+      this.id = row.id;
+      this.isAdd = false;
+      this.addPostageData1 = [{ ...row }];
+      var arr = row.province_id.split(",");
+      arr.forEach(ele => {
+        this.myAddressCheckList.push(Number(ele));
       });
-      console.log(res.data);
-      this.addPostageForm = { ...res.data };
-      this.addPostageForm.type = this.addPostageForm.type.toString();
+      this.province_name = row.province_name.split(",");
+      console.log(this.myAddressCheckList);
+      this.addPostageDialogVisible = true;
     },
     // 删除运费模板
     async tabDel(row) {
-      const res = await this.$api.del_shipping_templates({
-        id: row.id
-      });
+      const res = await this.$api.deleteshipping_region(row.id);
       console.log(res);
       if (res.code == 200) {
         this.getData();
         this.$message({
-          message: res.msg,
+          message: res.message,
           type: "success"
         });
       }
     },
     // 添加运费模板
     addPostage() {
+      this.isAdd = true;
+      for (const key in this.addPostageForm) {
+        this.addPostageForm[key] = "";
+      }
+      this.myAddressCheckList = [];
+      this.addPostageData1 = [];
       this.addPostageDialogVisible = true;
     },
     addPostageHandleClose() {
       this.addPostageDialogVisible = false;
     },
     addSheng() {
-      console.log(this.peisongCheckedCities);
-      let regionName = "";
-      let shengArr = [];
-      this.peisongCheckedCities.forEach(ele => {
-        let cityArr = [];
-        console.log(this.peisongCheckedCities.length);
-        if (this.peisongCheckedCities.length < 2) {
-          regionName += `${ele.shengVal}`;
-        } else {
-          regionName += `${ele.shengVal};`;
-        }
-        ele.peisongCheckedCities.forEach(item => [
-          cityArr.push({
-            name: item
-          })
-        ]);
-        shengArr.push({
-          name: ele.shengVal,
-          children: cityArr
+      if (this.isAdd) {
+        this.addPostageData1.push({
+          province_id: this.myAddressCheckList,
+          province_name: this.province_name,
+          shipping_price: 0,
+          min_price: 0
         });
-      });
-      console.log(shengArr);
-      this.addPostageData1.push({
-        region: [{ name: regionName, children: shengArr }],
-        first: 1,
-        price: 0,
-        continue: 1,
-        continue_price: 0,
-        regionName
-      });
-      console.log(regionName);
+      } else {
+        this.$set(this.addPostageData1[0], "province_name", this.province_name);
+        this.$set(
+          this.addPostageData1[0],
+          "province_id",
+          this.myAddressCheckList
+        );
+      }
       this.peisongDialogVisible = false;
     },
     // 运费模板提交
     async addShengshiquOnSubmit() {
-      console.log(this.addPostageData1);
-      const region_info = [...this.addPostageData1];
-      region_info.forEach((ele, i) => {
-        console.log(ele.region);
-        if (i == 0) {
-          ele.region = [
-            {
-              name: "默认全国",
-              children: [
-                {
-                  name: "默认全国"
-                }
-              ]
-            }
-          ];
-        } else if (ele.region[0].name.indexOf(";") >= 0) {
-          ele.region = ele.region[0].children;
-        }
-      });
-      console.log(region_info);
-      this.addPostageForm.region_info = region_info;
-      console.log(this.addPostageForm);
-      const res = await this.$api.save_shipping_templates({
-        ...this.addPostageForm
-      });
-      console.log(res);
-      if (res.code == 200) {
-        this.addPostageDialogVisible = false;
-        this.getData();
-        this.$message({
-          message: res.msg,
-          type: "success"
+      if (this.isAdd) {
+        const res = await this.$api.addshipping_region({
+          province_id: this.addPostageData1[0].province_id.toString(),
+          province_name: this.addPostageData1[0].province_name.toString(),
+          min_price: this.addPostageData1[0].min_price,
+          shipping_price: this.addPostageData1[0].shipping_price
         });
-      } else {
-        this.$message.error(res.msg);
+        console.log(res);
+        if (res.code == 200) {
+          this.addPostageDialogVisible = false;
+          this.getData();
+          this.$message({
+            message: res.message,
+            type: "success"
+          });
+        } else {
+          this.$message.error(res.message);
+        }
+      }else{
+        const res = await this.$api.updateshipping_region({
+          province_id: this.addPostageData1[0].province_id.toString(),
+          province_name: this.addPostageData1[0].province_name.toString(),
+          min_price: this.addPostageData1[0].min_price,
+          shipping_price: this.addPostageData1[0].shipping_price
+        },this.id);
+        console.log(res);
+        if (res.code == 200) {
+          this.addPostageDialogVisible = false;
+          this.getData();
+          this.$message({
+            message: res.message,
+            type: "success"
+          });
+        } else {
+          this.$message.error(res.message);
+        }
       }
     },
     // 选择可配送区域
     peisongHandleClose() {
       this.peisongDialogVisible = false;
     },
-    peisongHandleCheckedCitiesChange(value) {
-      console.log(value);
-      let checkedCount = value.length;
-      this.peisongCheckAll = checkedCount === this.shengJson.length;
-      this.peisongIsIndeterminate =
-        checkedCount > 0 && checkedCount < this.shengJson.length;
-    },
-    peisongChange(e, city) {
-      console.log(e, city);
-      city.peisongCheckedCities = e ? city.children : [];
+    // peisongHandleCheckedCitiesChange(value) {
+    //   console.log(value);
+    //   let checkedCount = value.length;
+    //   this.peisongCheckAll = checkedCount === this.shengJson.length;
+    //   this.peisongIsIndeterminate =
+    //     checkedCount > 0 && checkedCount < this.shengJson.length;
+    // },
+    peisongChange() {
+      this.province_name = [];
+      this.arr = [...new Set(this.cityLList)];
+      this.arr.forEach(ele => {
+        if (this.myAddressCheckList.indexOf(ele.id) != -1) {
+          this.province_name.push(`${ele.country_pos}-${ele.country_name}`);
+        }
+      });
+      this.province_name = [...new Set(this.province_name)];
+      console.log(this.province_name);
     },
     // 数组中的对象去重
     unique(arr) {
-      return [...new Set(arr)]
+      return [...new Set(arr)];
     },
     peisongHandleCheckedCitiesChange2(e, city) {
       console.log(e, city);
@@ -444,7 +399,6 @@ export default {
   .myTable {
     margin-top: 10px;
     /deep/ .vxe-table--render-default .vxe-body--column {
-      line-height: 0px;
       vertical-align: middle;
     }
     /deep/ .vxe-cell--label {

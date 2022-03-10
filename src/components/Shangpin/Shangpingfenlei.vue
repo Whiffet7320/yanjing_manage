@@ -33,15 +33,9 @@
             >
           </el-form-item>
         </el-form>
-      </div> -->
+      </div>-->
       <div class="tit1">
-        <el-button
-          @click="AddFenlei"
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          >添加分类</el-button
-        >
+        <el-button @click="AddFenlei" size="small" type="primary" icon="el-icon-plus">添加分类</el-button>
       </div>
       <div class="myTable">
         <vxe-table
@@ -52,18 +46,10 @@
           :data="tableData"
         >
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column
-            tree-node
-            field="cate_name"
-            title="分类名称"
-          ></vxe-table-column>
+          <vxe-table-column tree-node field="category_name" title="分类名称"></vxe-table-column>
           <vxe-table-column field="pic" title="分类图标">
             <template slot-scope="scope">
-              <el-image
-                :src="scope.row.pic"
-                fit="fill"
-                style="width: 40px; height: 40px"
-              >
+              <el-image :src="scope.row.icon_url" fit="fill" style="width: 40px; height: 40px">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>
@@ -79,16 +65,12 @@
               >
               </el-switch>
             </template>
-          </vxe-table-column> -->
+          </vxe-table-column>-->
           <vxe-table-column title="操作" width="180">
             <template slot-scope="scope">
               <div class="flex">
-                <el-button size="small" type="text" @click="tabEdit(scope.row)"
-                  >编辑</el-button
-                >
-                <el-button size="small" type="text" @click="tabDel(scope.row)"
-                  >删除</el-button
-                >
+                <el-button size="small" type="text" @click="tabEdit(scope.row)">编辑</el-button>
+                <el-button size="small" type="text" @click="tabDel(scope.row)">删除</el-button>
               </div>
             </template>
           </vxe-table-column>
@@ -110,14 +92,10 @@
           label-width="100px"
           class="demo-addForm"
         >
-          <!-- <el-row>
+          <el-row>
             <el-col :span="20">
               <el-form-item label="父级">
-                <el-select
-                  size="small"
-                  v-model="addForm.pid"
-                  placeholder="请选择"
-                >
+                <!-- <el-select size="small" v-model="addForm.pid" placeholder="请选择">
                   <el-option label="顶级分类" value="0"></el-option>
                   <el-option
                     v-for="item in tableData"
@@ -125,30 +103,23 @@
                     :label="item.cate_name"
                     :value="item.id"
                   ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row> -->
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="分类名称" prop="cate_name">
-                <el-input
-                  size="small"
-                  placeholder="请输入分类名称"
-                  v-model="addForm.cate_name"
-                ></el-input>
+                </el-select>-->
+                <el-cascader v-model="addForm.pid" size="small" :options="tableData" :props="props"></el-cascader>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="20">
-              <el-form-item label="分类图标(180*180)">
+              <el-form-item label="分类名称" prop="category_name">
+                <el-input size="small" placeholder="请输入分类名称" v-model="addForm.category_name"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="20">
+              <el-form-item label="分类图标">
                 <div @click="companyList('tb')" class="myImg">
-                  <el-image
-                    :src="addForm.pic"
-                    fit="fill"
-                    style="width: 60px; height: 60px"
-                  >
+                  <el-image :src="addForm.pic" fit="fill" style="width: 60px; height: 60px">
                     <div slot="error" class="image-slot">
                       <i class="el-icon-picture-outline"></i>
                     </div>
@@ -160,33 +131,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="分类大图(468*340)">
-                <div @click="companyList('dt')" class="myImg">
-                  <el-image
-                    :src="addForm.big_pic"
-                    fit="fill"
-                    style="width: 60px; height: 60px"
-                  >
-                    <div slot="error" class="image-slot">
-                      <i class="el-icon-picture-outline"></i>
-                    </div>
-                  </el-image>
-                  <div @click.stop="delImg('dt')" class="closeBtn">
-                    <el-button circle>×</el-button>
-                  </div>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="10">
-              <el-form-item label="排序">
-                <el-input size="small" v-model="addForm.sort"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
+
           <!-- <el-row>
             <el-col :span="12">
               <el-form-item label="状态" prop="is_show">
@@ -196,16 +141,11 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
-          </el-row> -->
+          </el-row>-->
           <el-row>
             <el-col :span="20">
               <el-form-item>
-                <el-button
-                  size="small"
-                  type="primary"
-                  @click="AddOnSubmit('addForm')"
-                  >提交</el-button
-                >
+                <el-button size="small" type="primary" @click="AddOnSubmit('addForm')">提交</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -231,7 +171,7 @@ export default {
       searchForm: {
         pid: "",
         status: "",
-        keyword: "",
+        keyword: ""
       },
       tableData: [],
       addDialogVisible: false,
@@ -241,17 +181,23 @@ export default {
         pic: "",
         big_pic: "",
         sort: "",
-        is_show: "显示",
+        is_show: "显示"
       },
       rules: {
-        cate_name: [
-          { required: true, message: "请输入分类名称", trigger: "blur" },
+        category_name: [
+          { required: true, message: "请输入分类名称", trigger: "blur" }
         ],
-        is_show: [{ required: true, message: "请选择状态", trigger: "change" }],
+        is_show: [{ required: true, message: "请选择状态", trigger: "change" }]
       },
       imgStatus: "",
       imgFile: "",
       id: "",
+      isAdd: true,
+      props: {
+        checkStrictly: true,
+        value: "id",
+        label: "category_name"
+      }
     };
   },
   created() {
@@ -259,15 +205,15 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.categoryIndex({
-        pid: 0,
+      const res = await this.$api.category({
+        pid: 0
       });
       console.log(res);
-      this.tableData = res.data;
-      this.tableData.forEach((ele) => {
+      this.tableData = res.data.data;
+      this.tableData.forEach(ele => {
         ele.is_showKG = ele.is_show == "1" ? true : false;
         if (ele.children) {
-          ele.children.forEach((item) => {
+          ele.children.forEach(item => {
             item.is_showKG = item.is_show == "1" ? true : false;
           });
         }
@@ -278,12 +224,12 @@ export default {
       console.log(row);
       const res = await this.$api.categorySave({
         ...row,
-        is_show: row.is_showKG == true ? "1" : "0",
+        is_show: row.is_showKG == true ? "1" : "0"
       });
       if (res.code == 200) {
         this.$message({
           message: res.msg,
-          type: "success",
+          type: "success"
         });
         this.addDialogVisible = false;
         this.getData();
@@ -293,6 +239,7 @@ export default {
       console.log(this.searchForm);
     },
     AddFenlei() {
+      this.isAdd = true;
       for (const key in this.addForm) {
         this.$set(this.addForm, key, "");
       }
@@ -304,6 +251,7 @@ export default {
     tabEdit(row) {
       console.log(row);
       this.id = row.id;
+      this.isAdd = false;
       this.addDialogVisible = true;
       row.is_show = row.is_show == "0" ? "隐藏" : "显示";
       row.pid = row.pid == "0" ? "顶级菜单" : row.pid;
@@ -311,11 +259,11 @@ export default {
     },
     async tabDel(row) {
       console.log(row);
-      const res = await this.$api.categoryDel(row.id);
+      const res = await this.$api.deleteCategory(row.id);
       if (res.code == 200) {
         this.$message({
           message: res.msg,
-          type: "success",
+          type: "success"
         });
         setTimeout(() => {
           this.getData();
@@ -327,18 +275,49 @@ export default {
     AddOnSubmit(formName) {
       this.addForm.is_show = this.addForm.is_show == "显示" ? 1 : 0;
       console.log(this.addForm);
-      this.$refs[formName].validate(async (valid) => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
-          const res = await this.$api.categorySave({
-            ...this.addForm,
-          });
-          if (res.code == 200) {
-            this.$message({
-              message: res.msg,
-              type: "success",
+          if (this.isAdd) {
+            const res = await this.$api.addCategory({
+              icon_url: this.addForm.pic,
+              pid:
+                this.addForm.pid.length == 1
+                  ? this.addForm.pid[0]
+                  : this.addForm.pid.length == 2
+                  ? this.addForm.pid[1]
+                  : this.addForm.pid[2],
+              category_name: this.addForm.category_name
             });
-            this.addDialogVisible = false;
-            this.getData();
+            if (res.code == 200) {
+              this.$message({
+                message: res.msg,
+                type: "success"
+              });
+              this.addDialogVisible = false;
+              this.getData();
+            }
+          } else {
+            const res = await this.$api.updateCategory(
+              {
+                icon_url: this.addForm.pic,
+                pid:
+                  this.addForm.pid.length == 1
+                    ? this.addForm.pid[0]
+                    : this.addForm.pid.length == 2
+                    ? this.addForm.pid[1]
+                    : this.addForm.pid[2],
+                category_name: this.addForm.category_name
+              },
+              this.id
+            );
+            if (res.code == 200) {
+              this.$message({
+                message: res.msg,
+                type: "success"
+              });
+              this.addDialogVisible = false;
+              this.getData();
+            }
           }
         } else {
           console.log("error submit!!");
@@ -373,24 +352,20 @@ export default {
           filetType == "image/gif"
         ) {
           this.imgFile = new FormData();
-          this.imgFile.append("image[]", file);
+          this.imgFile.append("image", file);
           sessionStorage.setItem("img", 123);
-          const res = await that.$api.productUpload(this.imgFile);
-          console.log(res.data[0]);
-          if (this.imgStatus == "tb") {
-            this.$set(this.addForm, "pic", res.data[0]);
-          } else if (this.imgStatus == "dt") {
-            this.$set(this.addForm, "big_pic", res.data[0]);
-          }
-          that.$refs.fileInputList.value = '';
+          const res = await that.$api.upload_pic(this.imgFile);
+          console.log(`${this.$url}${res.data.path}`);
+          this.$set(this.addForm, "pic", `${this.$url}${res.data.path}`);
+          that.$refs.fileInputList.value = "";
         } else {
           this.$message.error("图片格式不正确");
         }
       } else {
         this.$message.error("图片大小不正确");
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

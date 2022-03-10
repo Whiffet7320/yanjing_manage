@@ -274,11 +274,11 @@ export default {
       display: flex;
       align-items: center;
     }
-    .fenye {
-      margin-top: 10px;
-    }
+    // .fenye {
+    //   margin-top: 10px;
+    // }
     /deep/ .vxe-table--render-default .vxe-body--column {
-      line-height: 14px;
+      line-height: 14px !important;
       vertical-align: middle;
     }
     /deep/ .vxe-cell--label {
